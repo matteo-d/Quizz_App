@@ -35,6 +35,8 @@ const quizData = [
     correct: b,
   },
 ];
+
+
 // Pointer les éléments dont le innerText va changer au fil des questions
 a_text = document.getElementById("a_text");
 b_text = document.getElementById("b_text");
@@ -44,9 +46,14 @@ submit = document.getElementById("submit");
 questionElement = document.getElementById("question");
 // Suivre à quelle question on se trouve
 let currentQuestion = 0;
+// point de départ du score qui s'incrémente si réponse est vraie
 let score = 0;
+// Pointe tout les radios button des reponses
+let answersEls = document.querySelectorAll('.answer');
+// Pointe ver quiz ???
+let quiz = document.getElementById("quiz");
 
-const answersEls = document.querySelectorAll(".answer");
+
 // Appel fonction quiz (Appeler a chauqe fois que l'on submit)
 loadQuiz();
 // fonction charge un quizz
@@ -56,16 +63,16 @@ function loadQuiz() {
   let currentQuizData = quizData[currentQuestion];
   // La question affiché sera
   questionElement.innerText = currentQuizData.question;
-  // Réponses possibles affichées
+  // Les Réponses possibles affichées
   a_text.innerText = currentQuizData.a;
   b_text.innerText = currentQuizData.b;
   c_text.innerText = currentQuizData.c;
   d_text.innerText = currentQuizData.d;
 }
+
 function getSelected() {
-
   let answer = undefined;
-
+  
   answersEls.forEach((answerEl) => {
     if (answerEl.checked) {
       answer = answerEl.id;
@@ -74,20 +81,23 @@ function getSelected() {
 
   return answer;
 }
+
+
 // Fonction désélectionné un reponse
 function deselectAnswers() {
     answersEls.forEach((answerEl) => {
         answerEl.checked = false;
     });
 }
+
+
 // Au clic sur le bouton submit lance cette fonction
 submit.addEventListener("click", () => {
   const answer = getSelected();
-
 // Si une reponse existe on veut ...
   if (answer) {
       // Si la réponse utlisateur = la bonen réponse alors ...
-      if(answer = quizData[currentQuestion].correct) {
+      if(answer === quizData[currentQuestion].correct) {
           // Incrémenter le score de 1
           score++
       }
@@ -100,7 +110,7 @@ submit.addEventListener("click", () => {
         // Sinon lancer l'alerte
       } else {
         //Montre le score au test
-        alert("tu as finis le test, ton score est de .....");
-      }
+        quiz.innerHTML = "<h2> Salut BG, tu as répondu à ${score}/${quizData.length} question</h2>"
+      };
   }
 });
