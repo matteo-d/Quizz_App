@@ -49,6 +49,8 @@ let currentQuestion = 0;
 // Appel fonction quiz (Appeler a chauqe fois que l'on submit)
 loadQuiz();
    
+
+
 function loadQuiz() {
  // Savoir à quelle question on est dans le tableau d'objet du début
  let currentQuizData = quizData[currentQuestion];
@@ -62,10 +64,23 @@ function loadQuiz() {
  // Passage au prochain objet du tableau quizData
 }
 
+function getSelected() {
+
+    const answers = document.querySelectorAll(".answer");
+
+    answers.forEach(answer => {
+        console.log(answer.value);
+    });
+}
+
+
 // Au clic sur le bouton submit 
 submit.addEventListener('click',() => {
+    
     // incrémentation current question
     currentQuestion++; 
+    //
+    getSelected();
     //  
     if(currentQuestion < quizData.length ) {
         // puis relance le la fonction load quiz avec le prochain objet
