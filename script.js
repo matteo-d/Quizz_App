@@ -1,94 +1,106 @@
-// Tableau contenant des Objet 
+// Tableau contenant des Objet
 
 const quizData = [
-// Chaque objet contient une question, 4 posibilité de réponse et la réponse correcte
-    {
-        question: 'Qui est la plus bellisima ?',
-        a:'Julie',
-        b:'Angelina Joli', 
-        c:'Robert',
-        d:'Mattéo',
-        correct: a
-    },
-    {
-        question: "Qui est la plus mim's ?",
-        a:'Julie saoul',
-        b:'Julie qui dort', 
-        c:'Julie qui est saoulée',
-        d:'Julie TOUT LE TEMPS ! ',
-        correct: d
-    },
-    {
-        question: 'Qui va réussir son permis demain ?',
-        a:'La seule et unique, JULIE',
-        b:'Alain prost', 
-        c:'Ayrton Senna',
-        d:'Mickael Jackson',
-        correct: c
-    },
-    {
-        question: 'Meilleur morceau de la Julie ?',
-        a:'Le menton',
-        b:'Les fesses', 
-        c:'Les oreilles',
-        d:'Le coeur (annnnnnw kro chou)',
-        correct: b
-    }
+  // Chaque objet contient une question, 4 posibilité de réponse et la réponse correcte
+  {
+    question: "Qui est la plus bellisima ?",
+    a: "Julie",
+    b: "Angelina Joli",
+    c: "Robert",
+    d: "Mattéo",
+    correct: a,
+  },
+  {
+    question: "Qui est la plus mim's ?",
+    a: "Julie saoul",
+    b: "Julie qui dort",
+    c: "Julie qui est saoulée",
+    d: "Julie TOUT LE TEMPS ! ",
+    correct: d,
+  },
+  {
+    question: "Qui va réussir son permis demain ?",
+    a: "La seule et unique, JULIE",
+    b: "Alain prost",
+    c: "Ayrton Senna",
+    d: "Mickael Jackson",
+    correct: c,
+  },
+  {
+    question: "Meilleur morceau de la Julie ?",
+    a: "Le menton",
+    b: "Les fesses",
+    c: "Les oreilles",
+    d: "Le coeur (annnnnnw kro chou)",
+    correct: b,
+  },
 ];
 // Pointer les éléments dont le innerText va changer au fil des questions
-a_text = document.getElementById('a_text');
-b_text = document.getElementById('b_text');
-c_text = document.getElementById('c_text');
-d_text = document.getElementById('d_text');
-submit = document.getElementById('submit');
-questionElement = document.getElementById('question');
-// Suivre à quelle question on se trouve 
-
+a_text = document.getElementById("a_text");
+b_text = document.getElementById("b_text");
+c_text = document.getElementById("c_text");
+d_text = document.getElementById("d_text");
+submit = document.getElementById("submit");
+questionElement = document.getElementById("question");
+// Suivre à quelle question on se trouve
 let currentQuestion = 0;
+let score = 0;
 
+const answersEls = document.querySelectorAll(".answer");
 // Appel fonction quiz (Appeler a chauqe fois que l'on submit)
 loadQuiz();
-   
-
-
+// fonction charge un quizz
 function loadQuiz() {
- // Savoir à quelle question on est dans le tableau d'objet du début
- let currentQuizData = quizData[currentQuestion];
- // La question affiché sera 
- questionElement.innerText = currentQuizData.question;
-// Réponses possibles affichées 
- a_text.innerText = currentQuizData.a;
- b_text.innerText = currentQuizData.b;
- c_text.innerText = currentQuizData.c;
- d_text.innerText = currentQuizData.d;
- // Passage au prochain objet du tableau quizData
+    deselectAnswers();
+  // Savoir à quelle question on est dans le tableau d'objet du début
+  let currentQuizData = quizData[currentQuestion];
+  // La question affiché sera
+  questionElement.innerText = currentQuizData.question;
+  // Réponses possibles affichées
+  a_text.innerText = currentQuizData.a;
+  b_text.innerText = currentQuizData.b;
+  c_text.innerText = currentQuizData.c;
+  d_text.innerText = currentQuizData.d;
 }
-
 function getSelected() {
 
-    const answers = document.querySelectorAll(".answer");
+  let answer = undefined;
 
-    answers.forEach(answer => {
-        console.log(answer.value);
+  answersEls.forEach((answerEl) => {
+    if (answerEl.checked) {
+      answer = answerEl.id;
+    }
+  });
+
+  return answer;
+}
+// Fonction désélectionné un reponse
+function deselectAnswers() {
+    answersEls.forEach((answerEl) => {
+        answerEl.checked = false;
     });
 }
+// Au clic sur le bouton submit lance cette fonction
+submit.addEventListener("click", () => {
+  const answer = getSelected();
 
-
-// Au clic sur le bouton submit 
-submit.addEventListener('click',() => {
-    
-    // incrémentation current question
-    currentQuestion++; 
-    //
-    getSelected();
-    //  
-    if(currentQuestion < quizData.length ) {
+// Si une reponse existe on veut ...
+  if (answer) {
+      // Si la réponse utlisateur = la bonen réponse alors ...
+      if(answer = quizData[currentQuestion].correct) {
+          // Incrémenter le score de 1
+          score++
+      }
+      // Passer à la prochaine question..
+    currentQuestion++;
+    // Et si on est pas à la fin du quizz
+    if (currentQuestion < quizData.length) {
         // puis relance le la fonction load quiz avec le prochain objet
-    loadQuiz();
-    }
-    else {
-        //Montre le score au test 
-        alert('tu as finis le test, ton score est de .....')
-    }
-    
-}); 
+        loadQuiz();
+        // Sinon lancer l'alerte
+      } else {
+        //Montre le score au test
+        alert("tu as finis le test, ton score est de .....");
+      }
+  }
+});
